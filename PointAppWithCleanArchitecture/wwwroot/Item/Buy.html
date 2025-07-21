@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Buy Item</title>
+</head>
+<body>
+    <h1>Buy Item</h1>
+    <input id="itemId" placeholder="Item ID" /><br />
+    <input id="userId" placeholder="User ID" /><br />
+    <input id="quantity" type="number" placeholder="Quantity" /><br />
+    <button onclick="buyItem()">Buy</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function buyItem() {
+            const id = document.getElementById("itemId").value;
+            const userId = document.getElementById("userId").value;
+            const quantity = parseFloat(document.getElementById("quantity").value);
+
+            const response = await fetch(`/Item/BuyItem/${id}/${userId}?quantity=${quantity}`, {
+                method: 'POST'
+            });
+
+            const output = document.getElementById("output");
+
+            if (!response.ok) {
+                const text = await response.text();
+                output.textContent = `Error: ${response.status} - ${text}`;
+                return;
+            }
+
+            output.textContent = "Item bought successfully.";
+        }
+    </script>
+</body>
+</html>

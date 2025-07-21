@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update All User Points</title>
+    <style>
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Update All Points</h2>
+        <button onclick="updatePoints()">Run Update</button>
+    </div>
+
+    <script>
+        async function updatePoints() {
+            const response = await fetch('/User/UpdatePoints', {
+                method: 'POST'
+            });
+
+            alert(response.ok ? "Points updated" : "Failed to update points");
+        }
+    </script>
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+</body>
+</html>

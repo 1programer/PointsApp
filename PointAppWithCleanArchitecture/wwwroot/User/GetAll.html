@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Get All Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .user-card {
+            border: 2px solid black;
+            border-radius: 20px;
+            background: white;
+            width: 300px;
+            padding: 1rem;
+            margin: 1rem auto;
+            text-align: left;
+        }
+
+        .user-field {
+            margin: 0.5rem 0;
+            border-bottom: 1px solid black;
+            padding-bottom: 0.2rem;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        button {
+            margin-bottom: 2rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+        }
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+
+    <h1>All Users</h1>
+    <button onclick="getAllUsers()">Refresh</button>
+
+    <div id="usersContainer"></div>
+
+    <script>
+        async function getAllUsers() {
+            const response = await fetch('/User/GetAll');
+            const container = document.getElementById('usersContainer');
+            container.innerHTML = '';
+
+            if (!response.ok) {
+                container.innerHTML = `<p style="color:red;">Failed to load users</p>`;
+                return;
+            }
+
+            const users = await response.json();
+
+            users.forEach(user => {
+                const card = document.createElement('div');
+                card.className = 'user-card';
+
+                card.innerHTML = `
+                            <div class="user-field"><span class="label">Name:</span> ${user.name}</div>
+                            <div class="user-field"><span class="label">LName:</span> ${user.lName}</div>
+                            <div class="user-field"><span class="label">Phone:</span> ${user.phone}</div>
+                            <div class="user-field"><span class="label">PNumber:</span> ${user.pNumber}</div>
+                            <div class="user-field"><span class="label">PCode:</span> ${user.pCode}</div>
+                            <div class="user-field"><span class="label">BirthDate:</span> ${user.birthDate?.split('T')[0] || 'N/A'}</div>
+                            <div class="user-field"><span class="label">Points:</span> ${user.points}</div>
+                        `;
+
+                container.appendChild(card);
+            });
+        }
+    </script>
+
+</body>
+</html>

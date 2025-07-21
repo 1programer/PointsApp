@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 1rem;
+            max-width: 400px;
+            font-family: Arial;
+            margin: 2rem auto;
+        }
+
+        input {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+
+    <div class="card">
+        <h2>Create User</h2>
+        <input id="email" placeholder="Email">
+        <input id="username" placeholder="Username">
+        <input id="name" placeholder="First Name">
+        <input id="lname" placeholder="Last Name">
+        <input id="phone" placeholder="Phone">
+        <input id="pnumber" placeholder="Personal Number">
+        <input id="pcode" placeholder="Postal Code">
+        <input id="birthdate" type="date" placeholder="Birth Date">
+        <input id="password" placeholder="Password" type="password">
+        <button onclick="createUser()">Submit</button>
+    </div>
+
+    <script>
+        async function createUser() {
+            const dto = {
+                email: document.getElementById('email').value,
+                userName: document.getElementById('username').value,
+                name: document.getElementById('name').value,
+                lName: document.getElementById('lname').value,
+                phone: document.getElementById('phone').value,
+                pCode: document.getElementById('pcode').value,
+                pNumber: document.getElementById('pnumber').value,
+                birthDate: document.getElementById('birthdate').value,
+                password: document.getElementById('password').value
+            };
+
+            if (!dto.email || !dto.userName || !dto.name || !dto.lName || !dto.phone || !dto.pNumber || !dto.pCode || !dto.birthDate || !dto.password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const response = await fetch('/User/Create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dto)
+            });
+
+            if (response.ok) {
+                alert("User created successfully!");
+            } else {
+                const result = await response.json();
+                alert(result.message || "Failed to create user.");
+            }
+        }
+    </script>
+
+</body>
+</html>

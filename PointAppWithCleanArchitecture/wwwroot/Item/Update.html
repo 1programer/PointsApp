@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Update Item</title>
+</head>
+<body>
+    <button class="top-left" onclick="location.href='index.html'">Back</button>
+    <h1>Update Item</h1>
+    <input id="itemId" placeholder="Item ID" /><br />
+    <input id="name" placeholder="New Name" /><br />
+    <input id="description" placeholder="New Description" /><br />
+    <input id="imgUrl" placeholder="New Image URL" /><br />
+    <input id="price" type="number" placeholder="New Price" /><br />
+    <button onclick="updateItem()">Update</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function updateItem() {
+            const id = document.getElementById("itemId").value;
+            const dto = {
+                name: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                imgUrl: document.getElementById("imgUrl").value,
+                price: parseFloat(document.getElementById("price").value),
+            };
+
+            const response = await fetch(`/Item/Update/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dto)
+            });
+
+            const output = document.getElementById("output");
+
+            if (!response.ok) {
+                output.textContent = `Error: ${response.status}`;
+                return;
+            }
+
+            output.textContent = "Item updated successfully.";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete User</title>
+    <style>
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Delete User</h2>
+        <input id="userId" placeholder="User ID">
+        <button onclick="deleteUser()">Delete</button>
+    </div>
+
+    <script>
+        async function deleteUser() {
+            const id = document.getElementById('userId').value;
+            const response = await fetch(`/User/Delete/${id}`, {
+                method: 'DELETE'
+            });
+
+            alert(response.ok ? "User deleted" : "Failed to delete user");
+        }
+    </script>
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+
+</body>
+</html>

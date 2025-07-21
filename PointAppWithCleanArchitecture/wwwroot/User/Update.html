@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 1rem;
+            max-width: 400px;
+            font-family: Arial;
+            margin: 2rem auto;
+        }
+
+        input {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+
+    <div class="card">
+        <h2>Update User</h2>
+        <input id="id" placeholder="User ID (GUID)">
+        <input id="email" placeholder="Email">
+        <input id="username" placeholder="Username">
+        <input id="name" placeholder="First Name">
+        <input id="lname" placeholder="Last Name">
+        <input id="phone" placeholder="Phone">
+        <input id="pnumber" placeholder="Personal Number">
+        <input id="pcode" placeholder="Postal Code">
+        <input id="birthdate" type="date" placeholder="Birth Date">
+        <input id="password" placeholder="Password" type="password">
+        <button onclick="updateUser()">Submit</button>
+    </div>
+
+    <script>
+        async function updateUser() {
+            const id = document.getElementById('id').value;
+
+            const dto = {
+                Email: document.getElementById('email').value,
+                UserName: document.getElementById('username').value,
+                Name: document.getElementById('name').value,
+                LName: document.getElementById('lname').value,
+                Phone: document.getElementById('phone').value,
+                PNumber: document.getElementById('pnumber').value,
+                PCode: document.getElementById('pcode').value,
+                BirthDate: document.getElementById('birthdate').value,
+                Password: document.getElementById('password').value
+            };
+
+            if (!id) {
+                alert("User ID is required.");
+                return;
+            }
+
+            const response = await fetch(`/User/Update/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dto)
+            });
+
+            if (response.ok) {
+                alert("User updated successfully!");
+            } else {
+                const result = await response.text();
+                alert(result || "Failed to update user.");
+            }
+        }
+    </script>
+
+</body>
+</html>

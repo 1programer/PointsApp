@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Welcome to Item Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 3rem;
+            background: #f4f4f4;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            display: block;
+            width: 200px;
+            margin: 0.8rem auto;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: none;
+            background-color: #007acc;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+            button:hover {
+                background-color: #005fa3;
+            }
+
+        /* Style for the back button */
+        #backButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: auto;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            background-color: #555;
+            border-radius: 4px;
+            text-align: center;
+            display: inline-block;
+        }
+
+            #backButton:hover {
+                background-color: #333;
+            }
+    </style>
+</head>
+<body>
+
+    <button id="backButton" onclick="location.href='/index.html'">← Back to Main</button>
+
+    <h1>Welcome to Item Management</h1>
+
+    <button onclick="location.href='GetAll.html'">Get All Items</button>
+    <button onclick="location.href='GetById.html'">Get Item By ID</button>
+    <button onclick="location.href='Create.html'">Create Item</button>
+    <button onclick="location.href='Update.html'">Update Item</button>
+    <button onclick="location.href='Delete.html'">Delete Item</button>
+    <button onclick="location.href='Buy.html'">Buy Item</button>
+
+
+</body>
+</html>

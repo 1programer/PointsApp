@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Point</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 4rem auto;
+            max-width: 400px;
+            font-family: Arial;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+    <div class="card">
+        <h2>Update Point</h2>
+        <input id="id" placeholder="Point ID">
+        <input id="userId" placeholder="User ID">
+        <input id="amount" type="number" placeholder="Amount">
+        <br><br>
+        <button onclick="updatePoint()">Update</button>
+    </div>
+    <script>
+        async function updatePoint() {
+            const id = document.getElementById('id').value;
+            const dto = {
+                userId: document.getElementById('userId').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                isRedeemed: false
+            };
+            const res = await fetch(`/Point/Update/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dto)
+            });
+            if (res.ok) alert("Point updated");
+            else alert("Failed to update");
+        }
+    </script>
+</body>
+</html>

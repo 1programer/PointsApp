@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Points</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 500px;
+            font-family: Arial;
+        }
+
+            .card div {
+                margin-bottom: 0.5rem;
+            }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+    <h2>All Points</h2>
+    <div id="pointsContainer"></div>
+    <script>
+        async function loadPoints() {
+            const res = await fetch('/Point/GetAll');
+            const points = await res.json();
+            const container = document.getElementById('pointsContainer');
+            points.forEach(p => {
+                container.innerHTML += `
+                    <div class="card">
+                        <div><span class="label">Id:</span> ${p.id}</div>
+                        <div><span class="label">UserId:</span> ${p.userId}</div>
+                        <div><span class="label">Value:</span> ${p.amount}</div>
+                        <div><span class="label">IsRedeemed:</span> ${p.isRedeemed}</div>
+                    </div>`;
+            });
+        }
+        loadPoints();
+    </script>
+</body>
+</html>

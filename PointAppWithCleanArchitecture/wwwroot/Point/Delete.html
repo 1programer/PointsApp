@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Point</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 4rem auto;
+            max-width: 400px;
+            font-family: Arial;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="location.href='index.html'">← Back</button>
+    <div class="card">
+        <h2>Delete Point</h2>
+        <input id="id" placeholder="Point ID">
+        <button onclick="deletePoint()">Delete</button>
+    </div>
+    <script>
+        async function deletePoint() {
+            const id = document.getElementById('id').value;
+            const res = await fetch(`/Point/Delete/${id}`, { method: 'DELETE' });
+            if (res.ok) alert("Point deleted");
+            else alert("Delete failed");
+        }
+    </script>
+</body>
+</html>

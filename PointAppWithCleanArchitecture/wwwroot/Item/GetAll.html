@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Get All Items</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            display: flex;
+            padding: 1rem;
+            margin: 1rem;
+            max-width: 500px;
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+
+        .card-image {
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+            .card-image img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        .card-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+            .card-details div {
+                margin-bottom: 0.5rem;
+                border-bottom: 1px solid #999;
+                padding-bottom: 0.2rem;
+            }
+
+        .label {
+            font-weight: bold;
+            margin-right: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="top-left" onclick="location.href='index.html'">Back</button>
+    <h1>All Items</h1>
+    <button onclick="getAll()">Refresh</button>
+    <div id="itemsContainer"></div>
+
+    <script>
+        async function getAll() {
+            const response = await fetch('/Item/GetAll');
+            if (!response.ok) {
+                alert('Failed to load items');
+                return;
+            }
+
+            const items = await response.json();
+            const container = document.getElementById('itemsContainer');
+            container.innerHTML = '';
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                card.innerHTML = `
+                            <div class="card-image">
+                                <img src="${item.imgUrl || 'https://via.placeholder.com/120'}" alt="Item Photo" />
+                            </div>
+                            <div class="card-details">
+                                <div><span class="label">id:</span>${item.id}</div>
+                                <div><span class="label">name:</span>${item.name || 'N/A'}</div>
+                                <div><span class="label">description:</span>${item.description || 'N/A'}</div>
+                                <div><span class="label">price:</span>$${item.price?.toFixed(2) || '0.00'}</div>
+                            </div>
+                        `;
+
+                container.appendChild(card);
+            });
+        }
+    </script>
+
+</body>
+</html>

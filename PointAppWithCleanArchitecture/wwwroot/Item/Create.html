@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Item</title>
+</head>
+<body>
+    <button class="top-left" onclick="location.href='index.html'">Back</button>
+    <h1>Create New Item</h1>
+    <input id="name" placeholder="Name" /><br />
+    <input id="description" placeholder="Description" /><br />
+    <input id="imgUrl" placeholder="Image URL" /><br />
+    <input id="price" type="number" placeholder="Price" /><br />
+    <button onclick="createItem()">Create</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function createItem() {
+            const dto = {
+                name: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                imgUrl: document.getElementById("imgUrl").value,
+                price: parseFloat(document.getElementById("price").value),
+            };
+
+            const response = await fetch('/Item/Create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dto)
+            });
+
+            const output = document.getElementById("output");
+
+            if (!response.ok) {
+                output.textContent = `Error: ${response.status}`;
+                return;
+            }
+
+            const result = await response.json();
+            output.textContent = JSON.stringify(result, null, 2);
+        }
+    </script>
+</body>
+</html>

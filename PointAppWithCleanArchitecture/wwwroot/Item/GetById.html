@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Get Item by ID</title>
+    <style>
+        .card {
+            border: 2px solid black;
+            border-radius: 10px;
+            display: flex;
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 500px;
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+
+        .card-image {
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+            .card-image img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        .card-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+            .card-details div {
+                margin-bottom: 0.5rem;
+                border-bottom: 1px solid #999;
+                padding-bottom: 0.2rem;
+            }
+
+        .label {
+            font-weight: bold;
+            margin-right: 0.3rem;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+
+        #search-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <button class="top-left" onclick="location.href='index.html'">Back</button>
+    <div id="search-section">
+        <h1>Get Item by ID</h1>
+        <input type="text" id="itemIdInput" placeholder="Enter Item ID" />
+        <button onclick="getItem()">Get Item</button>
+    </div>
+
+    <div id="itemContainer"></div>
+
+    <script>
+        async function getItem() {
+            const id = document.getElementById('itemIdInput').value;
+            const container = document.getElementById('itemContainer');
+            container.innerHTML = '';
+
+            if (!id) {
+                alert('Please enter an item ID');
+                return;
+            }
+
+            const response = await fetch(`/Item/GetById/${id}`);
+            if (!response.ok) {
+                container.innerHTML = `<p style="color:red;text-align:center;">Item not found or request failed.</p>`;
+                return;
+            }
+
+            const item = await response.json();
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                        <div class="card-image">
+                            <img src="${item.imgUrl || ''}" alt="Item Photo" />
+                        </div>
+                        <div class="card-details">
+                            <div><span class="label">id:</span>${item.id}</div>
+                            <div><span class="label">name:</span>${item.name || 'N/A'}</div>
+                            <div><span class="label">description:</span>${item.description || 'N/A'}</div>
+                            <div><span class="label">price:</span>$${item.price?.toFixed(2) || '0.00'}</div>
+                        </div>
+                    `;
+
+            container.appendChild(card);
+        }
+    </script>
+
+</body>
+</html>

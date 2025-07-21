@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Delete Item</title>
+</head>
+<body>
+    <button class="top-left" onclick="location.href='index.html'">Back</button>
+    <h1>Delete Item</h1>
+    <input id="itemId" placeholder="Item ID" />
+    <button onclick="deleteItem()">Delete</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function deleteItem() {
+            const id = document.getElementById("itemId").value;
+            const response = await fetch(`/Item/Delete/${id}`, {
+                method: 'DELETE'
+            });
+
+            const output = document.getElementById("output");
+
+            if (!response.ok) {
+                output.textContent = `Error: ${response.status}`;
+                return;
+            }
+
+            output.textContent = "Item deleted successfully.";
+        }
+    </script>
+</body>
+</html>
