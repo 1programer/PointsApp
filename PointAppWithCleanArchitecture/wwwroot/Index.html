@@ -9,6 +9,7 @@
             background: #f0f2f5;
             margin: 3rem;
             text-align: center;
+            position: relative;
         }
 
         h1 {
@@ -32,9 +33,26 @@
             .btn:hover {
                 background-color: #005fa3;
             }
+
+        .top-right-buttons {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+            .top-right-buttons .btn {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                margin: 0 0.25rem;
+            }
     </style>
 </head>
 <body>
+
+    <div class="top-right-buttons">
+        <a href="Authenticate/Login.html" class="btn">Login</a>
+        <a href="Authenticate/Register.html" class="btn">Register</a>
+    </div>
 
     <h1>Welcome to Main Dashboard</h1>
 
@@ -42,5 +60,22 @@
     <a href="User/index.html" class="btn">Go to User Management</a>
     <a href="Point/index.html" class="btn">Go to Point Management</a>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("jwt");
+            window.location.href = "login.html";
+        });
+    </script>
 </body>
 </html>

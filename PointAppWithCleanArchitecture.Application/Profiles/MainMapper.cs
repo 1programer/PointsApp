@@ -8,14 +8,10 @@ namespace PointAppWithCleanArchitecture.Application.Profiles
     {
         public MainMapper()
         {
-            CreateMap<Item, ItemDto>();
-            CreateMap<ItemDto, Item>();
-            CreateMap<Point, PointDto>();
-            CreateMap<PointDto, Point>();
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
-            CreateMap<User, UserSignUpDto>();
-            CreateMap<UserSignUpDto, User>();
+            CreateMap<Item, ItemDto>().ReverseMap();
+            CreateMap<Point, PointDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserSignUpDto>().ReverseMap();
         }
     }
 }

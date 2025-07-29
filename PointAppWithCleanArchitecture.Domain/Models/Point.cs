@@ -5,11 +5,9 @@ namespace PointAppWithCleanArchitecture.Domain.Models
 {
     public class Point : Base
     {
-        [Required]
-        public decimal Amount { get; set; }
+        public required decimal Amount { get; set; }
         [Required, ForeignKey(nameof(User))]
         public Guid UserId { get; set; }
-        [Required]
-        public bool IsRedeemed { get; set; }
+        public required bool IsRedeemed { get; set; }
     }
 }

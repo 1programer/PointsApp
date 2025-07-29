@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required><br><br>
+        <input type="password" id="password" placeholder="Password" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+    const apiUrl = "https://localhost:7124/api/authenticate";
+
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const res = await fetch(`${apiUrl}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName: username, password: password })
+      });
+
+      const data = await res.json();
+      const message = document.getElementById("message");
+
+        if (res.ok) {
+            localStorage.setItem("jwt", data.token);
+            message.textContent = "Login successful! Redirecting...";
+            setTimeout(() => {
+                window.location.href = "/index.html";
+            }, 1000);
+        }
+    });
+    </script>
+</body>
+</html>

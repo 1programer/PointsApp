@@ -4,13 +4,10 @@ namespace PointAppWithCleanArchitecture.Domain.Models
 {
     public class Item : Base
     {
-        [Required, MaxLength(50)]
-        public string Name { get; set; }
-        [Required]
-        public string Description { get; set; }
-        [Required]
-        public string ImgUrl { get; set; }
-        [Required]
-        public decimal Price { get; set; }
+        [MaxLength(50)]
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+        public required string ImgUrl { get; set; }
+        public required decimal Price { get; set; }
     }
 }

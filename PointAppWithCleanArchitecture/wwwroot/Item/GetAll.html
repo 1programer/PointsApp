@@ -52,6 +52,36 @@
     </style>
 </head>
 <body>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                // Redirect to login if no token found
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch("https://localhost:7124/api/your-protected-endpoint", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    // Token might be expired or invalid
+                    throw new Error("Unauthorized or error");
+                }
+
+                const data = await response.json();
+                document.getElementById("dataOutput").textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                console.error(err);
+                // Redirect back to login on error
+                window.location.href = "login.html";
+            }
+        });
+    </script>
     <button class="top-left" onclick="location.href='index.html'">Back</button>
     <h1>All Items</h1>
     <button onclick="getAll()">Refresh</button>
@@ -73,16 +103,16 @@
                 card.className = 'card';
 
                 card.innerHTML = `
-                            <div class="card-image">
-                                <img src="${item.imgUrl || 'https://via.placeholder.com/120'}" alt="Item Photo" />
-                            </div>
-                            <div class="card-details">
-                                <div><span class="label">id:</span>${item.id}</div>
-                                <div><span class="label">name:</span>${item.name || 'N/A'}</div>
-                                <div><span class="label">description:</span>${item.description || 'N/A'}</div>
-                                <div><span class="label">price:</span>$${item.price?.toFixed(2) || '0.00'}</div>
-                            </div>
-                        `;
+                                <div class="card-image">
+                                    <img src="${item.imgUrl || 'https://via.placeholder.com/120'}" alt="Item Photo" />
+                                </div>
+                                <div class="card-details">
+                                    <div><span class="label">id:</span>${item.id}</div>
+                                    <div><span class="label">name:</span>${item.name || 'N/A'}</div>
+                                    <div><span class="label">description:</span>${item.description || 'N/A'}</div>
+                                    <div><span class="label">price:</span>$${item.price?.toFixed(2) || '0.00'}</div>
+                                </div>
+                            `;
 
                 container.appendChild(card);
             });

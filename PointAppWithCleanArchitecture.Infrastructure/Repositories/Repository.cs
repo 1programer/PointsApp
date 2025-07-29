@@ -60,8 +60,8 @@ namespace PointAppWithCleanArchitecture.Repositories
             {
                 if (entity is User userEntity)
                 {
-                    var pointsToDelete = _context.Points.Where(b => b.UserId.ToString() == userEntity.Id);
-                    _context.Points.RemoveRange(pointsToDelete);
+                    var pointsToDelete = _context.Point.Where(b => b.UserId.ToString() == userEntity.Id);
+                    _context.Point.RemoveRange(pointsToDelete);
                 }
 
                 _dbSet.Remove(entity);

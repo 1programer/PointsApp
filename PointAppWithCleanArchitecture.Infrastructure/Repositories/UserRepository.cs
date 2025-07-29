@@ -14,7 +14,7 @@ namespace PointAppWithCleanArchitecture.Repositories
             foreach (User user in users)
             {
                 decimal TotalPoints = 0;
-                foreach (Point point in context.Points)
+                foreach (Point point in context.Point)
                     if (point.IsRedeemed)
                         continue;
                     else if (point.UserId == Guid.Parse(user.Id))

@@ -9,7 +9,8 @@ namespace Practice_8.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ItemController : ControllerBase
+    [Authorize]
+     public class ItemController : ControllerBase
     {
         private readonly IItemRepository _ItemRepository;
         private readonly IPointRepository _PointRepository;

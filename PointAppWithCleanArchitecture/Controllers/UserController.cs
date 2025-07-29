@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PointAppWithCleanArchitecture.Application.DTOS;
 using PointAppWithCleanArchitecture.Domain.Models;
@@ -8,24 +10,40 @@ namespace Practice_8.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly RoleManager<Role> _roleManager;
+        private readonly UserManager<User> _userManager;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+
+        public UserController(IUserRepository userRepository, IMapper mapper, RoleManager<Role> userRoles, UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-
+            _roleManager = userRoles;
+            _userManager = userManager;
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
 
         public async Task<ActionResult<List<UserDto>>> GetAll()
         {
             var users = await _userRepository.GetAllAsync();
-            return _mapper.Map<List<UserDto>>(users);
+            List<User> pcodeUsers = new List<User>();
+            var pcode = User.FindFirst("pcode")?.Value;
+            foreach (var user in users)
+            {
+                if(user.PCode == pcode)
+                {
+                    pcodeUsers.Add(user);
+                }
+            }
+            
+            return _mapper.Map<List<UserDto>>(pcodeUsers);
         }
 
         [HttpGet("GetById/{id}")]
@@ -45,14 +63,30 @@ namespace Practice_8.Controllers
         {
             if (dto == null)
                 return BadRequest();
-            User User = _mapper.Map<User>(dto);
 
+            // Map DTO to User entity (without password)
+            var user = _mapper.Map<User>(dto);
 
-            await _userRepository.CreateAsync(User); 
-            
-            return CreatedAtAction(nameof(GetById), new { id = User.Id }, User);
+            // Create user with password using UserManager (this saves user and sets Id)
+            var result = await _userManager.CreateAsync(user, dto.Password);
+
+            if (!result.Succeeded)
+            {
+                // Return errors if user creation failed
+                return BadRequest(result.Errors);
+            }
+
+            // Ensure the "User" role exists
+            if (!await _roleManager.RoleExistsAsync(Role.Customer))
+            {
+                await _roleManager.CreateAsync(new Role { Name = Role.Customer });
+            }
+
+            // Assign "User" role to the new user
+            await _userManager.AddToRoleAsync(user, Role.Customer);
+
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
-
         [HttpPut("Update/{id}")]
 
         public async Task<ActionResult> Update(string id, [FromBody] UserSignUpDto dto)

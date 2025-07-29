@@ -7,7 +7,7 @@ namespace PointAppWithCleanArchitecture.Application.DTOS
     public class PointDto
     {
         [Required]
-        public decimal amount { get; set; }
+        public decimal Amount { get; set; }
         [Required, ForeignKey(nameof(User))]
         public string UserId { get; set; }
         [Required]

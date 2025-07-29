@@ -9,6 +9,8 @@ namespace Practice_8.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
+
     public class PointController : ControllerBase
     {
         private readonly IPointRepository _pointRepository;
@@ -26,8 +28,20 @@ namespace Practice_8.Controllers
 
         public async Task<ActionResult<Point>> GetAll()
         {
-            var books = await _pointRepository.GetAllAsync();
-            return Ok(books);
+            var points = await _pointRepository.GetAllAsync();
+            var pcodePoints = new List<Point>();
+            var users = await _userRepository.GetAllAsync();
+            var pcode = User.FindFirst("pcode")?.Value;
+            foreach (var user in users)
+            {
+                foreach(var point in points)
+                {
+                    if(point.UserId.ToString() == user.Id)
+                        if(user.PCode == pcode)
+                            pcodePoints.Add(point);
+                }
+            }
+            return Ok(pcodePoints);
         }
 
         [HttpGet("GetByid/{id}")]

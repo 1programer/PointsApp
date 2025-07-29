@@ -19,7 +19,7 @@ namespace PointAppWithCleanArchitecture.Repositories
             {
                 PointDto point = new PointDto
                 {
-                    amount = -itemQuantity * item.Price,
+                    Amount = -itemQuantity * item.Price,
                     UserId = user.Id,
                     IsRedeemed = false
                 };
